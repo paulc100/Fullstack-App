@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var compression = require('compression');
 
 var app = express();
 
@@ -13,6 +14,9 @@ var mongoDB = process.env.MONGODB_URI || dev_db_url;
 mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+app.use(compression()); //Compress all routes
+app.use(helmet());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
